@@ -10,16 +10,13 @@ public class Input {
 	}
 	
 	public int numInput() { //gets users number input
-		System.out.println("========================================");
 		num = scan.nextInt();
-		System.out.println("========================================");
 		return num;
 	}
 	
 	public String stringInput() { //gets users word input
-		System.out.println("========================================");
+
 		string = scan.next();
-		System.out.println("========================================");
 		return string;
 	}
 
