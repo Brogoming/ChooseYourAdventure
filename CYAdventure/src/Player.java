@@ -6,6 +6,10 @@ public class Player {
 	private int damage;
 	private int speed;
 	private int defence;
+	private int level;
+	private int currentXp;
+	private int neededXp;
+	//Inventory
 	private int money;
 	
 	public Player() { //default constructor
@@ -15,6 +19,9 @@ public class Player {
 		this.speed = 0;
 		this.defence = 0;
 		this.money = 0;
+		this.level = 1;
+		this.currentXp = 0;
+		this.neededXp = 100 * level;
 	}
 	
 	public Player(String name, int health, int damage, int speed, int defence) {
@@ -23,6 +30,12 @@ public class Player {
 		this.damage = damage;
 		this.speed = speed;
 		this.defence = defence;
+	}
+	
+	public void LevelUp() { //levels up the player
+		if (currentXp == neededXp) {
+			setLevel(+1);
+		}
 	}
 
 	public String getName() {
@@ -71,6 +84,22 @@ public class Player {
 
 	public void setMoney(int money) {
 		this.money = money;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getCurrentXp() {
+		return currentXp;
+	}
+
+	public void setCurrentXp(int currentXp) {
+		this.currentXp = currentXp;
 	}
 	
 	

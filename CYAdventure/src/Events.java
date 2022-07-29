@@ -6,18 +6,18 @@ public class Events {
 	private Enemy goblin;
 	
 	public Events() {
-		Entities();
+		Classes();
 		PlayerSetup();
-		startUp();
+		StartUp();
 	}
 	
-	public void Entities() {
+	public void Classes() {
 		input = new Input();
 		player = new Player();
-		goblin = new Enemy("Goblin", 5, 5, 5, 1, 5);
+		goblin = new Enemy("Goblin", 5, 5, 5, 1, "easy");
 	}
 	
-	public void PlayerSetup() {
+	public void PlayerSetup() { //sets up the player stats
 		System.out.println("What is your name?");
 		player.setName(input.stringInput());
 		System.out.println("How much health do you have?");
@@ -28,52 +28,49 @@ public class Events {
 		player.setDamage(input.numInput());
 		System.out.println("How much defence do you have?");
 		player.setDefence(input.numInput());
-	}
+	} //end of player stats
 	
 	public void Playerstats() { //shows that players stats
 		System.out.println("========================================");
 		System.out.println("Health: " + player.getHealth() + " Speed: " + player.getSpeed() + " Damage: " + player.getDamage() + " Defence: " + player.getDefence());
 		System.out.println("========================================");
-	}
+	} //end of player stats
 	
-	public void startUp() { 
+	public void StartUp() { 
 		Playerstats();
-		System.out.println("You are at a 3 way intersection " + player.getName() + ". Where do you want to go?");
-		System.out.println("1. Left");
-		System.out.println("2. Right");
-		System.out.println("3. Forward");
-		answer = input.numInput();
-		System.out.println("========================================");
-		
-		switch(answer) {
-		case 1:
-			event1();
-			break;
-		case 2:
-			
-		case 3:
-			
-		}
+		Combat(player, goblin);
 		
 	}
 	
-	private void event1() {
-		System.out.println("You are at a 4 way intersection. Where do you want to go?");
-		System.out.println("1. Left");
-		System.out.println("2. Right");
-		System.out.println("3. Forward");
-		answer = input.numInput();
-		System.out.println("========================================");
+	private void Combat(Player player, Enemy enemy) { //combat between 2 people
+		boolean attacking = true;
 		
-		switch(answer) {
-		case 1:
-			
-		case 2:
-			
-		case 3:
-			
+		while(attacking){
+			if (player.getHealth() <= 0 || enemy.getHealth() <= 0) {
+				attacking = false;
+			} else {
+				if (enemy.getSpeed() > player.getSpeed()) { //the enemy attacks
+					player.setHealth(Damage(player.getDefence(), enemy.getDamage())); //sets the players health
+				} else {
+					enemy.setHealth(Damage(enemy.getDefence(), player.getDamage())); //sets the goblins health
+				}
+			}
 		}
-	}
-
+		if (player.getHealth() > 0) {
+			System.out.println("Player wins!");
+		}
+		else {
+			System.out.println(enemy.getName() + " wins!");
+		}
+	} //end of combat
 	
+	private int Damage(int defence, int attack) { //damage inflicted during combat
+		int damage = attack - defence;
+		if (damage > 0) {
+			return damage;
+		} else {
+			System.out.println("No damage");
+		}
+		return 0;
+	} //end of dmage
 }
