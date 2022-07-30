@@ -19,5 +19,17 @@ public class Input {
 		string = scan.next();
 		return string;
 	}
+	
+	public boolean isStringInt(String s)
+	{
+	    try
+	    {
+	        Integer.parseInt(s);
+	        return true;
+	    } catch (NumberFormatException ex)
+	    {
+	        return false;
+	    }
+	}
 
 }
