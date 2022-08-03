@@ -2,35 +2,35 @@
 public class Player {
 
 	private String name;
-	private int health;
+	private int fullHealth;
+	private int tempHealth;
 	private int speed;
-	private int defence;
-//	private int level;
-//	private int currentXp;
-//	private int neededXp;
+	private int level = 1;
+	private int currentXp;
+	private int neededXp;
 //	//Inventory
 //	private int money;
 	
 	private Weapon weapon;
+	private Armor armor;
 	
 	public Player() { //default constructor
 		this.name = null;
-		this.health = 0;
+		this.fullHealth = 0;
 		this.speed = 0;
-		this.defence = 0;
+		this.currentXp = 0;
 //		this.money = 0;
-//		this.level = 1;
-//		this.currentXp = 0;
-//		this.neededXp = 100 * level;
 		this.weapon = new Weapon();
+		this.armor = new Armor();
 	}
 	
-	public Player(String name, int health, int speed, int defence, Weapon weapon) {
+	public Player(String name, int health, int speed, Armor armor, Weapon weapon) { //custom constructor
 		this.name = name;
-		this.health = health;
+		this.fullHealth = health;
+		this.tempHealth = health;
 		this.speed = speed;
-		this.defence = defence;
 		this.weapon = weapon;
+		this.armor = armor;
 	}
 	
 	
@@ -42,11 +42,14 @@ public class Player {
 		this.weapon = weapon;
 	}
 
-//	public void LevelUp() { //levels up the player
-//		if (currentXp == neededXp) {
-//			setLevel(+1);
-//		}
-//	}
+	public void LevelUp(int addXp) { //levels up the player
+		neededXp = 100 * level;
+		setCurrentXp(currentXp + addXp);
+		if (getCurrentXp() >= neededXp) {
+			level = level + 1;
+			setLevel(level);
+		}
+	}
 
 	public String getName() {
 		return name;
@@ -56,12 +59,28 @@ public class Player {
 		this.name = name;
 	}
 
-	public int getHealth() {
-		return health;
+	public Armor getArmor() {
+		return armor;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
+	public void setArmor(Armor armor) {
+		this.armor = armor;
+	}
+
+	public int getFullHealth() {
+		return fullHealth;
+	}
+
+	public void setFullHealth(int health) {
+		this.fullHealth = health;
+	}
+
+	public int getTempHealth() {
+		return tempHealth;
+	}
+
+	public void setTempHealth(int tempHealth) {
+		this.tempHealth = tempHealth;
 	}
 
 	public int getSpeed() {
@@ -72,14 +91,6 @@ public class Player {
 		this.speed = speed;
 	}
 
-	public int getDefence() {
-		return defence;
-	}
-
-	public void setDefence(int defence) {
-		this.defence = defence;
-	}
-
 //	public int getMoney() {
 //		return money;
 //	}
@@ -88,21 +99,21 @@ public class Player {
 //		this.money = money;
 //	}
 //
-//	public int getLevel() {
-//		return level;
-//	}
-//
-//	public void setLevel(int level) {
-//		this.level = level;
-//	}
-//
-//	public int getCurrentXp() {
-//		return currentXp;
-//	}
-//
-//	public void setCurrentXp(int currentXp) {
-//		this.currentXp = currentXp;
-//	}
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getCurrentXp() {
+		return currentXp;
+	}
+
+	public void setCurrentXp(int currentXp) {
+		this.currentXp = currentXp;
+	}
 	
 	
 }

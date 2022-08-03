@@ -6,36 +6,51 @@ public class Events {
 	private Random random = new Random();
 	
 	private Player player;
-	private Enemy enemy;
+	private Enemy goblin;
 	
 	private Weapon sword;
 	private Weapon dagger;
 	private Weapon wand;
 	private Weapon fist;
 	
-	public Events() {
+	private Armor robe;
+	private Armor plate;
+	private Armor chain;
+	private Armor cloth;
+	
+	public Events() { //temporary
 		Classes();
 		PlayerCharacter();
-		GoblinFight("Goblin", 7, 10, 5, dagger);
-//		SkeletonFight();
+		Combat(player, goblin);
+		Playerstats(player);
 	}
 	
 	public void Classes() { //loads all of the excess classes
 		input = new Input();
-		Characters();
+		goblin = new Enemy();
 		Weapons();
+		Armors();
+		Characters();
 	}
 	
+	private void Armors() {
+		cloth = new Armor("Loin Cloth", 1);
+		plate = new Armor("Plate Armor", 10);
+		robe = new Armor("Robe", 5);
+		chain = new Armor("Chain Mail", 8);
+		
+	}
+
 	public void Weapons() { //loads all weapons used
-		sword = new Weapon("Sword", 8, 5);
-		dagger = new Weapon("Dagger", 6, 4);
-		wand = new Weapon("Wand", 10, 0);
-		fist = new Weapon("Fist", 2, 1);
+		sword = new Weapon("Sword", 3, 5); //8
+		dagger = new Weapon("Dagger", 2, 4); //6
+		wand = new Weapon("Wand", 10, 0); //10
+		fist = new Weapon("Fist", 1, 1); //2
 	}
 	
 	public void Characters() { //loads all characters used
 		player = new Player();
-		enemy = new Enemy();
+		goblin = new Enemy("Goblin", 7, 10, cloth, dagger, "hard");
 	}
 	
 	public void PlayerCharacter() { //basic classes to start with
@@ -48,13 +63,13 @@ public class Events {
 		int answer = input.numInput();
 		switch (answer) {
 		case 1: 
-			player = new Player("Knight", 15, 5, 10, sword);
+			player = new Player("Knight", 15, 5, plate, sword);
 			break;
 		case 2:
-			player = new Player("Rogue", 12, 15, 3, dagger);
+			player = new Player("Rogue", 12, 15, chain, dagger);
 			break;
 		case 3:
-			player = new Player("Wizard", 8, 12, 10, wand);
+			player = new Player("Wizard", 8, 12, robe, wand);
 			break;
 		}
 	}// end of Player character
@@ -62,71 +77,58 @@ public class Events {
 	public void Playerstats(Player player) { //shows that players stats
 		System.out.println("========================================");
 		System.out.println("Player: " + player.getName());
-		System.out.println("Health: " + player.getHealth() + " Speed: " + player.getSpeed() + " Defence: " + player.getDefence());
+		System.out.println("Health: " + player.getTempHealth() + "/" + player.getFullHealth() + " Speed: " + player.getSpeed() + " Defence: " + player.getArmor().getDefence() + " Level: " + player.getLevel() + " XP: " + player.getCurrentXp());
 	} //end of player stats
 	
 	public void Enemystats(Enemy enemy) { //shows that enemy's stats
 		System.out.println("========================================");
 		System.out.println("Enemy: " + enemy.getName());
-		System.out.println("Health: " + enemy.getHealth() + " Speed: " + enemy.getSpeed() + " Defence: " + enemy.getDefence());
-	} //end of player enemy's
-	
-	public void GoblinFight(String name, int health, int speed, int defence, Weapon weapon) { 
-		enemy = new Enemy(name, health, speed, defence, weapon);
-		Combat(player, enemy);
-	}
-	
-//	public void SkeletonFight() {
-//		enemy = new Enemy("Skeleton", 12, 5, 7, sword);
-//		Combat(player, enemy);
-//	}
-//	
-//	public void DragonFight() {
-//		enemy = 
-//	}
+		System.out.println("Health: " + enemy.getTempHealth() + "/" + enemy.getFullHealth() + " Speed: " + enemy.getSpeed() + " Defence: " + enemy.getArmor().getDefence());
+	} //end of enemy stats
 	
 	private void Combat(Player player, Enemy enemy) { //combat between 2 people: player, enemy, player weapon, enemy weapon
 		boolean attacking = true;
 		while(attacking){
 			if (enemy.getSpeed() > player.getSpeed()) { //the enemy attacks
 				EnemyTurn(player, enemy);
-				if (TestDead(player, enemy)) {
-					attacking = false; 
+				if (!TestDead(player, enemy)) {
+					attacking = false;
 					continue;
 				}
 				PlayerTurn(player, enemy);
-				if (TestDead(player, enemy)) {
-					attacking = false; 
+				if (!TestDead(player, enemy)) {
+					attacking = false;
 					continue;
 				}
 			} else {
 				PlayerTurn(player, enemy);
-				if (TestDead(player, enemy)) {
+				if (!TestDead(player, enemy)) {
 					attacking = false; 
 					continue;
 				}
 				EnemyTurn(player, enemy);
-				if (TestDead(player, enemy)) {
-					attacking = false; 
+				if (!TestDead(player, enemy)) {
+					attacking = false;
 					continue;
 				}
 			}
 		}
 	} //end of combat
 	
-	private boolean TestDead(Player player, Enemy enemy) {
-		if (player.getHealth() <= 0 || enemy.getHealth() <= 0) {
-			if(player.getHealth() <= 0) {
+	private boolean TestDead(Player player, Enemy enemy) { //looks to see if the player or enemy is dead
+		if (player.getTempHealth() <= 0 || enemy.getTempHealth() <= 0) {
+			if(player.getTempHealth() <= 0) {
 				System.out.println(player.getName() + " is dead!");
 			}
-			if(enemy.getHealth() <= 0) {
+			if(enemy.getTempHealth() <= 0) {
 				System.out.println(enemy.getName() + " is dead!");
+				player.LevelUp(enemy.getXpDrop());
 			}
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
-	}
+	} //end of test dead
 	
 	private void PlayerTurn(Player player, Enemy enemy) { //players turn during combat
 		Playerstats(player);
@@ -137,9 +139,9 @@ public class Events {
 		switch(answer) {
 		case 1:
 			if (random.nextInt(20) + 1 >= enemy.getSpeed()) {
-				int damage = Damage(enemy.getDefence(), (int)player.getWeapon().getMaxD(), (int)player.getWeapon().getMinD());
+				int damage = Damage(enemy.getArmor().getDefence(), (int)player.getWeapon().getMaxD(), (int)player.getWeapon().getMinD());
 				System.out.println(enemy.getName() + " is delt " + damage + " damage with " + player.getWeapon().getName() + "!");
-				enemy.setHealth(enemy.getHealth() - damage);
+				enemy.setTempHealth(enemy.getTempHealth() - damage);
 			} else {
 			System.out.println("Miss!");
 			}
@@ -151,9 +153,9 @@ public class Events {
 		Enemystats(enemy);
 		System.out.println(enemy.getName() + "'s Turn");
 		if (random.nextInt(20) + 1 >= player.getSpeed()) {
-			int damage = Damage(player.getDefence(), (int)enemy.getWeapon().getMaxD(), (int)enemy.getWeapon().getMinD());
+			int damage = Damage(player.getArmor().getDefence(), (int)enemy.getWeapon().getMaxD(), (int)enemy.getWeapon().getMinD());
 			System.out.println(player.getName() + " is delt " + damage + " damage with " + enemy.getWeapon().getName() + "!");
-			player.setHealth(player.getHealth() - damage);
+			player.setTempHealth(player.getTempHealth() - damage);
 		} else {
 			System.out.println("Miss!");
 		}
