@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Player {
 
@@ -13,15 +15,20 @@ public class Player {
 	
 	private Weapon weapon;
 	private Armor armor;
+	private Item item;
+	
+	private Item[] inventory;
 	
 	public Player() { //default constructor
 		this.name = null;
 		this.fullHealth = 0;
+		this.tempHealth = 0;
 		this.speed = 0;
 		this.currentXp = 0;
 //		this.money = 0;
 		this.weapon = new Weapon();
 		this.armor = new Armor();
+		this.inventory = new Item[5];
 	}
 	
 	public Player(String name, int health, int speed, Armor armor, Weapon weapon) { //custom constructor
@@ -33,6 +40,19 @@ public class Player {
 		this.armor = armor;
 	}
 	
+	public void AddInventory(Item item) { //add item to inventory
+		
+	}
+	
+	public void UseInventory() { //uses the item in inventory 
+		
+	}
+	
+	public Item[] Inventory() { //shows inventory
+		
+		
+		return inventory;
+	}
 	
 	public Weapon getWeapon() {
 		return weapon;
@@ -43,11 +63,15 @@ public class Player {
 	}
 
 	public void LevelUp(int addXp) { //levels up the player
-		neededXp = 100 * level;
+		neededXp = 50 * level;
 		setCurrentXp(currentXp + addXp);
 		if (getCurrentXp() >= neededXp) {
 			level = level + 1;
 			setLevel(level);
+			if (getLevel()%2 == 0) {
+				setFullHealth(getFullHealth()+2);
+			}
+			setTempHealth(getFullHealth());
 		}
 	}
 

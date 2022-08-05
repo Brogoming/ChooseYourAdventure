@@ -7,6 +7,7 @@ public class Events {
 	
 	private Player player;
 	private Enemy goblin;
+	private Enemy skeleton;
 	
 	private Weapon sword;
 	private Weapon dagger;
@@ -18,39 +19,46 @@ public class Events {
 	private Armor chain;
 	private Armor cloth;
 	
+	private Item hPotion;
+	
 	public Events() { //temporary
 		Classes();
 		PlayerCharacter();
-		Combat(player, goblin);
+		Combat(player, skeleton);
 		Playerstats(player);
 	}
 	
 	public void Classes() { //loads all of the excess classes
 		input = new Input();
-		goblin = new Enemy();
+		Items();
 		Weapons();
 		Armors();
 		Characters();
 	}
 	
-	private void Armors() {
+	private void Armors() { //loads all armors
 		cloth = new Armor("Loin Cloth", 1);
-		plate = new Armor("Plate Armor", 10);
+		plate = new Armor("Plate Armor", 8);
 		robe = new Armor("Robe", 5);
-		chain = new Armor("Chain Mail", 8);
+		chain = new Armor("Chain Mail", 6);
 		
 	}
 
-	public void Weapons() { //loads all weapons used
-		sword = new Weapon("Sword", 3, 5); //8
-		dagger = new Weapon("Dagger", 2, 4); //6
-		wand = new Weapon("Wand", 10, 0); //10
+	public void Weapons() { //loads all weapons
+		sword = new Weapon("Sword", 5, 5); //10
+		dagger = new Weapon("Dagger", 4, 4); //8
+		wand = new Weapon("Wand", 12, 0); //12
 		fist = new Weapon("Fist", 1, 1); //2
 	}
 	
-	public void Characters() { //loads all characters used
+	public void Characters() { //loads all characters
 		player = new Player();
-		goblin = new Enemy("Goblin", 7, 10, cloth, dagger, "hard");
+		goblin = new Enemy("Goblin", 7, 10, cloth, dagger, "easy");
+		skeleton = new Enemy("Skeleton", 12, 7, chain, sword, "medium");
+	}
+	
+	public void Items() { //loads all items
+		hPotion = new Item("Health Potion", Effects.HEALINNG);
 	}
 	
 	public void PlayerCharacter() { //basic classes to start with
@@ -69,7 +77,7 @@ public class Events {
 			player = new Player("Rogue", 12, 15, chain, dagger);
 			break;
 		case 3:
-			player = new Player("Wizard", 8, 12, robe, wand);
+			player = new Player("Wizard", 8, 12, robe, sword);
 			break;
 		}
 	}// end of Player character
@@ -135,6 +143,7 @@ public class Events {
 		System.out.println(player.getName() + "'s Turn");
 		System.out.println("----------------------------------------");
 		System.out.println("1. Use " + player.getWeapon().getName());
+		System.out.println("2. Open Inventory");
 		answer = input.numInput();
 		switch(answer) {
 		case 1:
@@ -145,6 +154,9 @@ public class Events {
 			} else {
 			System.out.println("Miss!");
 			}
+			break;
+		case 2:
+			System.out.println(player.Inventory());
 			break;
 		}
 	} //end of player turn
