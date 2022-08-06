@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Events {
@@ -19,11 +20,14 @@ public class Events {
 	private Armor chain;
 	private Armor cloth;
 	
-	private Item hPotion;
+	private static Item hPotion;
+	private ArrayList <Item> inventory;
 	
 	public Events() { //temporary
 		Classes();
 		PlayerCharacter();
+		
+		
 		Combat(player, skeleton);
 		Playerstats(player);
 	}
@@ -41,7 +45,6 @@ public class Events {
 		plate = new Armor("Plate Armor", 8);
 		robe = new Armor("Robe", 5);
 		chain = new Armor("Chain Mail", 6);
-		
 	}
 
 	public void Weapons() { //loads all weapons
@@ -58,7 +61,7 @@ public class Events {
 	}
 	
 	public void Items() { //loads all items
-		hPotion = new Item("Health Potion", Effects.HEALINNG);
+		hPotion = new Item("Health Potion", "h");
 	}
 	
 	public void PlayerCharacter() { //basic classes to start with
@@ -72,6 +75,7 @@ public class Events {
 		switch (answer) {
 		case 1: 
 			player = new Player("Knight", 15, 5, plate, sword);
+			//player.AddInventory(hPotion);
 			break;
 		case 2:
 			player = new Player("Rogue", 12, 15, chain, dagger);
@@ -156,7 +160,7 @@ public class Events {
 			}
 			break;
 		case 2:
-			System.out.println(player.Inventory());
+			//player.Inventory();
 			break;
 		}
 	} //end of player turn

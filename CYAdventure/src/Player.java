@@ -17,7 +17,7 @@ public class Player {
 	private Armor armor;
 	private Item item;
 	
-	private Item[] inventory;
+	private ArrayList <Item> inventory;
 	
 	public Player() { //default constructor
 		this.name = null;
@@ -28,7 +28,7 @@ public class Player {
 //		this.money = 0;
 		this.weapon = new Weapon();
 		this.armor = new Armor();
-		this.inventory = new Item[5];
+		this.inventory = new ArrayList <Item>();
 	}
 	
 	public Player(String name, int health, int speed, Armor armor, Weapon weapon) { //custom constructor
@@ -40,20 +40,30 @@ public class Player {
 		this.armor = armor;
 	}
 	
-	public void AddInventory(Item item) { //add item to inventory
-		
-	}
+//	public void AddInventory(Item item) { //add item to inventory
+//		
+//		if (inventory.size() != 5) {
+//			inventory.add(item);
+//		} else {
+//			System.out.println("Inventory is full!");
+//		}
+//	}
+//	
+//	public void UseInventory() { //uses the item in inventory 
+//		
+//	}
+//	
+//	public void Inventory() { //shows inventory
+////		for (int i = 0; i < inventory.size(); i++) {
+////			System.out.println((i+1) + ". " + inventory.get(i).getName());
+////		}
+//		System.out.println(inventory.get(0).getName());
+//	}
 	
-	public void UseInventory() { //uses the item in inventory 
-		
-	}
-	
-	public Item[] Inventory() { //shows inventory
-		
-		
+	public ArrayList<Item> getInventory() {
 		return inventory;
 	}
-	
+
 	public Weapon getWeapon() {
 		return weapon;
 	}
